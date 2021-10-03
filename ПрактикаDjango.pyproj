@@ -34,7 +34,16 @@
   <ItemGroup>
     <Compile Include="Firstapp\admin.py" />
     <Compile Include="Firstapp\apps.py" />
+    <Compile Include="Firstapp\migrations\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Firstapp\models.py" />
+    <Compile Include="Firstapp\templatetags\specification.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Firstapp\templatetags\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Firstapp\tests.py" />
     <Compile Include="Firstapp\urls_fapp.py">
       <SubType>Code</SubType>
@@ -42,6 +51,9 @@
     <Compile Include="Firstapp\views.py" />
     <Compile Include="Firstapp\__init__.py" />
     <Compile Include="manage.py" />
+    <Compile Include="trst\module1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ПрактикаDjango\__init__.py" />
     <Compile Include="ПрактикаDjango\settings.py" />
     <Compile Include="ПрактикаDjango\urls.py" />
@@ -49,14 +61,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Firstapp\" />
+    <Folder Include="Firstapp\migrations\" />
+    <Folder Include="Firstapp\templatetags\" />
     <Folder Include="Firstapp\templates\" />
     <Folder Include="Firstapp\templates\Firstapp\" />
+    <Folder Include="trst\" />
     <Folder Include="ПрактикаDjango\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Firstapp\templates\Firstapp\index.html" />
+    <Content Include="Firstapp\templates\Firstapp\product.html" />
+    <Content Include="Firstapp\templates\Firstapp\WebPage1.html" />
     <Content Include="requirements.txt" />
-    <Content Include="db.sqlite3" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.html">

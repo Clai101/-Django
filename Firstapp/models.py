@@ -2,8 +2,30 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.urls import reverse
 
 USER = get_user_model()
+
+
+def make_product_url(object,viewname):
+    ct_model = object.__class__._meta.model_name
+    
+    return reverse(viewname, kwargs={' ct_model':ct_model, 'slug':object.slug})
+
+
+class LatestProduct:
+    def show_product(*args,**kwargs):
+        products = []
+        ct_models = ContentType.objects.filter(model__in=args)
+        for cat_model in ct_models:
+            model_products = cat_model.model_class().objects.all().order_by('-id')[:5]
+            products.extend(model_products)
+        return products
+
+    
+
+class LatestProductManager:
+    objects = LatestProduct()
 
 class Category(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название категории')
@@ -19,7 +41,7 @@ class Product(models.Model):
     slug = models.SlugField(unique=True)
     price = models.DecimalField(max_digits=9,decimal_places=2, verbose_name = 'Цена продукта')
     image = models.ImageField(verbose_name = 'Картинка продукта')
-    description = models.TextField(verbose_name = 'Картинка продукта', null=True)
+    description = models.TextField(verbose_name = 'Описание продукта', null=True)
     def __str__(self):
         return self.title
 
@@ -28,13 +50,15 @@ class SmartPhone(Product):
     charge_capacity = models.CharField(max_length=255, verbose_name='Емкость батареи')
     data_capacity = models.CharField(max_length=255, verbose_name='Память')
     ram = models.CharField(max_length=255, verbose_name='Оперативная память')
-
+    def get_absolute_url(self):
+        return make_product_url(self, 'product')
     
 class WoshMachin(Product):
     qantity_turnover = models.CharField(max_length=255, verbose_name='Количество оборотов')
     capacity = models.CharField(max_length=255, verbose_name='Емкость')
     qantity_of_modes = models.CharField(max_length=255, verbose_name='Количество режимов')
-
+    def get_absolute_url(self):
+        return make_product_url(self, 'product_detail')
 
 class CartProduct(models.Model):
     user = models.ForeignKey('Customer',on_delete=models.CASCADE,verbose_name='Покупатель')
