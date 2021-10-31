@@ -11,6 +11,15 @@ class MainListView(View):
         context = {'last_product':last_product}
         return render(request, 'Firstapp/index.html', context)
 
+class CartView(View):
+    def get(self, request, *args, **kwargs):
+        customer = Customer.objects.get(user=request.user)
+        cart = Cart.objects.get(owner=customer)
+        context = {'cart':cart}
+        return render(request, 'Firstapp/index.html', context)
+
+class AddToCart():
+    pass
 
 
 class ProductDetailView(DetailView):

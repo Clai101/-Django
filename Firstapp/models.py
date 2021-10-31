@@ -23,7 +23,6 @@ class LatestProduct:
         return products
 
     
-
 class LatestProductManager:
     objects = LatestProduct()
 
@@ -34,8 +33,7 @@ class Category(models.Model):
         return self.title
 
 class Product(models.Model):
-    class Meta:
-        abstract = True
+    
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE)
     title = models.CharField(max_length=255,verbose_name='Название продукта')
     slug = models.SlugField(unique=True)
@@ -45,6 +43,7 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+"""
 class SmartPhone(Product):
     diagonal = models.CharField(max_length=255, verbose_name='Диагональ')
     charge_capacity = models.CharField(max_length=255, verbose_name='Емкость батареи')
@@ -59,6 +58,7 @@ class WoshMachin(Product):
     qantity_of_modes = models.CharField(max_length=255, verbose_name='Количество режимов')
     def get_absolute_url(self):
         return make_product_url(self, 'product_detail')
+"""
 
 class CartProduct(models.Model):
     user = models.ForeignKey('Customer',on_delete=models.CASCADE,verbose_name='Покупатель')

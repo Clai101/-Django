@@ -69,6 +69,7 @@
     <Folder Include="ПрактикаDjango\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Firstapp\templates\Firstapp\cart.html" />
     <Content Include="Firstapp\templates\Firstapp\index.html" />
     <Content Include="Firstapp\templates\Firstapp\product.html" />
     <Content Include="Firstapp\templates\Firstapp\WebPage1.html" />
