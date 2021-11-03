@@ -37,6 +37,7 @@
     <Compile Include="Firstapp\migrations\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Firstapp\mixins.py" />
     <Compile Include="Firstapp\models.py" />
     <Compile Include="Firstapp\templatetags\specification.py">
       <SubType>Code</SubType>
@@ -51,9 +52,6 @@
     <Compile Include="Firstapp\views.py" />
     <Compile Include="Firstapp\__init__.py" />
     <Compile Include="manage.py" />
-    <Compile Include="trst\module1.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ПрактикаDjango\__init__.py" />
     <Compile Include="ПрактикаDjango\settings.py" />
     <Compile Include="ПрактикаDjango\urls.py" />
@@ -65,7 +63,6 @@
     <Folder Include="Firstapp\templatetags\" />
     <Folder Include="Firstapp\templates\" />
     <Folder Include="Firstapp\templates\Firstapp\" />
-    <Folder Include="trst\" />
     <Folder Include="ПрактикаDjango\" />
   </ItemGroup>
   <ItemGroup>
@@ -74,11 +71,6 @@
     <Content Include="Firstapp\templates\Firstapp\product.html" />
     <Content Include="Firstapp\templates\Firstapp\WebPage1.html" />
     <Content Include="requirements.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="readme.html">
-      <SubType>WebBrowser</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="For_django\">

@@ -1,5 +1,33 @@
 {%extends 'Firstapp/index.html'%}
 {%block content%}
 
+    <section class="py-5">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">Категория</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Сторимость за еденицу</th>
+                <th scope="col">Сторимость общая</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in cart.products.all %}
+                <tr>
+                    <th scope="row">{{item.product.title}}</th>
+                    <td>{{item.product.category}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.product.price}}</td>
+                    <td>{{item.final_price}}</td>
+                    <td>
+                        <a href="#" slug=item.product.slug><button type="button" class="btn btn-outline-danger">Удалить из корзины</button></a>
+                    </td>
+                </tr>   
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
 
 {%endblock content%}

@@ -1,42 +1,55 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import DetailView
-from .models import SmartPhone, WoshMachin, LatestProductManager
+from .models import Product, Customer, CartProduct
 from django.views import View
+from .mixins import CartMixin
 
 
 class MainListView(View):
     def get(self, request, *args, **kwargs):
-        last_product = LatestProductManager.objects.show_product('smartphone','woshmachin')
-
-        context = {'last_product':last_product}
+        last_product = Product.objects.all()
+        
+        context = {'last_product':last_product, }
         return render(request, 'Firstapp/index.html', context)
 
-class CartView(View):
+class CartView(CartMixin,View):
     def get(self, request, *args, **kwargs):
-        customer = Customer.objects.get(user=request.user)
-        cart = Cart.objects.get(owner=customer)
-        context = {'cart':cart}
-        return render(request, 'Firstapp/index.html', context)
+        context = {'cart':self.cart}
+        return render(request, 'Firstapp/cart.html', context)
 
-class AddToCart():
-    pass
+class DeleteFromCartView(CartMixin, View):
+    def get(self, request, *args, **kwargs):
+        product_slug = kwargs.get('slug')
+        product = Product.objects.get(slug = product_slug)
+        cart_product = CartProduct.objects.get(product=product, user=self.cart.owner, cart=self.cart,final_price=0)
+        self.cart.products.remove(cart_product)
+        cart_product.delete()
+        return redirect('/cart/')
+
+class AddToCartView(CartMixin, View):
+    def get(self, request, *args, **kwargs):
+        product_slug = kwargs.get('slug')
+        product = Product.objects.get(slug = product_slug)
+        cart_product, created = CartProduct.objects.get_or_create(
+                                                                  product = product,
+                                                                  user = self.cart.owner,
+                                                                  cart = self.cart,
+                                                                  final_price = 0
+                                                                  )
+        if created:
+            self.cart.products.add(cart_product) 
+     
+        return redirect('/cart/')
+
 
 
 class ProductDetailView(DetailView):
-    CT_MODELS = {
-        'smartphone': SmartPhone,
-        'woshmachin' : WoshMachin,
-        }
-    def dispatch(self, request, *args, **kwargs):
-        self.model = self.CT_MODELS[kwargs['ct_model']]
-        self.queryset = self.model.objects.all()
-        return super().dispatch(request, *args, **kwargs)
+    
     context_object_name = 'product'
     template_name = 'Firstapp/product.html'
     slug_url_kwarg = 'slug'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['ct_model'] = self.model._meta.model_name
         return context
 
