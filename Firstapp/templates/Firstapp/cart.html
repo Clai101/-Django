@@ -1,15 +1,15 @@
 {%extends 'Firstapp/index.html'%}
 {%block content%}
-
     <section class="py-5">
+        {% if cart.products.count  %}
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">Название</th>
-                <th scope="col">Категория</th>
-                <th scope="col">Количество</th>
-                <th scope="col">Сторимость за еденицу</th>
-                <th scope="col">Сторимость общая</th>
+                <th scope="col">РќР°Р·РІР°РЅРёРµ</th>
+                <th scope="col">РљР°С‚РµРіРѕСЂРёСЏ</th>
+                <th scope="col">РљРѕР»РёС‡РµСЃС‚РІРѕ</th>
+                <th scope="col">РЎС‚РѕСЂРёРјРѕСЃС‚СЊ Р·Р° РµРґРµРЅРёС†Сѓ</th>
+                <th scope="col">РЎС‚РѕСЂРёРјРѕСЃС‚СЊ РѕР±С‰Р°СЏ</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -18,16 +18,33 @@
                 <tr>
                     <th scope="row">{{item.product.title}}</th>
                     <td>{{item.product.category}}</td>
-                    <td>{{item.quantity}}</td>
+                    <td>
+                        <form action="{%url 'change_quantity' slug=item.product.slug %}" method="post">
+                            {%csrf_token%}
+                            <input type="number" class="form-control" name="quantity" min="1" style="width:70px;" value="{{item.quantity}}" />
+                            <input type="submit" class="btn btn-primary"  value="Р’РІРµСЃС‚Рё" />
+                        </form>
+                    </td>
                     <td>{{item.product.price}}</td>
                     <td>{{item.final_price}}</td>
                     <td>
-                        <a href="#" slug=item.product.slug><button type="button" class="btn btn-outline-danger">Удалить из корзины</button></a>
+                        <a href="{%url 'remove_from_cart' slug=item.product.slug %}"><button type="button" class="btn btn-outline-danger">РЈРґР°Р»РёС‚СЊ РёР· РєРѕСЂР·РёРЅС‹</button></a>
                     </td>
                 </tr>   
             {% endfor %}
+                <tr>
+                    <th scope="row">Р’СЃРµРіРѕ:</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {# _____ #}  </td>
+                </tr>  
             </tbody>
         </table>
+        {% else %}
+            <a>РљРѕСЂР·РёРЅР° РїСѓСЃС‚Р°</a>
+        {% endif %}
     </section>
 
 {%endblock content%}

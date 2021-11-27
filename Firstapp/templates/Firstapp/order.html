@@ -1,0 +1,43 @@
+{%extends 'Firstapp/index.html'%}
+{%block content%}
+<section class="py-5">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">Категория</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Сторимость за еденицу</th>
+                <th scope="col">Сторимость общая</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart.products.all %}
+            <tr>
+                <th scope="row">{{item.product.title}}</th>
+                <td>{{item.product.category}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.product.price}}</td>
+                <td>{{item.final_price}}</td>
+              
+            </tr>
+            {% endfor %}
+            <tr>
+                <th scope="row">Всего:</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> {# _____ #}  </td>
+            </tr>
+        </tbody>
+    </table>
+
+</section>
+<form action="{%url 'make_order'%}" method="post">
+    <div class="col-md-8 mx-auto">{{form}}</div>
+    <input type="submit" class="btn btn-success"  value="Оплатить" />
+</form>
+{%endblock content%}

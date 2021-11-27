@@ -34,11 +34,11 @@
   <ItemGroup>
     <Compile Include="Firstapp\admin.py" />
     <Compile Include="Firstapp\apps.py" />
-    <Compile Include="Firstapp\migrations\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Firstapp\mixins.py" />
     <Compile Include="Firstapp\models.py" />
+    <Compile Include="Firstapp\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Firstapp\templatetags\specification.py">
       <SubType>Code</SubType>
     </Compile>
@@ -47,6 +47,9 @@
     </Compile>
     <Compile Include="Firstapp\tests.py" />
     <Compile Include="Firstapp\urls_fapp.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Firstapp\utils.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Firstapp\views.py" />
@@ -60,6 +63,7 @@
   <ItemGroup>
     <Folder Include="Firstapp\" />
     <Folder Include="Firstapp\migrations\" />
+    <Folder Include="Firstapp\templates\imgs\" />
     <Folder Include="Firstapp\templatetags\" />
     <Folder Include="Firstapp\templates\" />
     <Folder Include="Firstapp\templates\Firstapp\" />
@@ -69,6 +73,7 @@
     <Content Include="Firstapp\templates\Firstapp\cart.html" />
     <Content Include="Firstapp\templates\Firstapp\index.html" />
     <Content Include="Firstapp\templates\Firstapp\product.html" />
+    <Content Include="Firstapp\templates\Firstapp\order.html" />
     <Content Include="Firstapp\templates\Firstapp\WebPage1.html" />
     <Content Include="requirements.txt" />
   </ItemGroup>

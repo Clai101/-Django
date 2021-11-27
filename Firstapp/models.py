@@ -31,7 +31,7 @@ class CartProduct(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     final_price =  models.DecimalField(max_digits=9,decimal_places=2, null=True, verbose_name = 'Финальная цена продукта')
     def __str__(self):
-        return self.content_object.title
+        return self.product.title
 
 
 class Cart(models.Model):
@@ -42,12 +42,21 @@ class Cart(models.Model):
     products = models.ManyToManyField(CartProduct, verbose_name='Продукты', related_name = 'related_cart')
     in_order = models.BooleanField(default=False)
     for_anonym_user = models.BooleanField(default=False)
-    def __str__(self):
-        return self.title
+   
     
 class Customer(models.Model):
     user = models.ForeignKey(USER, verbose_name='Пользователь',on_delete=models.CASCADE)
     phone = models.CharField(max_length=25,null=True,blank=True, verbose_name='Номер телефона' )
     adress = models.CharField(max_length=255,null=True,blank=True, verbose_name='Адрес' )
+    orders = models.ManyToManyField('Order', related_name = 'related_cart')
     def __str__(self):
         return f'Покупатель {self.user.first_name,self.user.last_name} '
+
+class Order(models.Model):
+    first_name = models.CharField(verbose_name='Имя',max_length=25)
+    last_name = models.CharField(verbose_name='Фамилия',max_length=25)
+    phone = models.CharField(max_length=25,null=True,blank=True, verbose_name='Номер телефона' )
+    adress = models.CharField(max_length=500,null=True,blank=True, verbose_name='Адрес' )
+    data = models.CharField(max_length=20,null=True,blank=True, verbose_name='Дата доставки' )
+    customer =  models.ForeignKey(Customer, verbose_name='Пользователь',on_delete=models.CASCADE, related_name='related_orders')
+    cart = models.ForeignKey(Cart, verbose_name='Продукты',on_delete=models.CASCADE, related_name='related_orders')
