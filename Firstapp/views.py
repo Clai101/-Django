@@ -5,7 +5,6 @@ from django.views import View
 from .mixins import CartMixin
 from .utils import refresh_cart
 from .forms import OrderForm
-
 class MainListView(View):
     def get(self, request, *args, **kwargs):
         last_product = Product.objects.all()
@@ -15,24 +14,21 @@ class MainListView(View):
 class CartView(CartMixin,View):
     def get(self, request, *args, **kwargs):
        
-        context = {'cart':self.cart, }
+        context = {'cart':self.cart, 'price' : self.cart.finl_price,}
         return render(request, 'Firstapp/cart.html', context)
 
 class DeleteFromCartView(CartMixin, View):
     def get(self, request, *args, **kwargs):
-        print("________________")
         product_slug = kwargs.get('slug')
-        print("________________")
         product = Product.objects.get(slug = product_slug)
-        print("________________")
         cart_product = CartProduct.objects.get(
                                                 product=product,
                                                 user=self.cart.owner,
                                                 cart=self.cart,
                                                 )
-        print("________________")
+        self.cart.finl_price -= product.price * cart_product.quantity
         self.cart.products.remove(cart_product)
-        print("________________")
+        cart_product.delete()
         refresh_cart(self.cart)
         return redirect('/cart/')
 
@@ -40,14 +36,17 @@ class AddToCartView(CartMixin, View):
     def get(self, request, *args, **kwargs):
         product_slug = kwargs.get('slug')
         product = Product.objects.get(slug = product_slug)
-        cart_product, created = CartProduct.objects.get_or_create(
-                                                                  product = product,
+        cart_product, created = CartProduct.objects.get_or_create(product = product,
                                                                   user = self.cart.owner,
                                                                   cart = self.cart,
-                                                                 
                                                                   )
         if created:
             self.cart.products.add(cart_product)
+            self.cart.finl_price += product.price
+        if cart_product.quantity == None:
+            cart_product.quantity = 1
+        cart_product.final_price = product.price * cart_product.quantity
+        cart_product.save()
         refresh_cart(self.cart)
         return redirect('/cart/')
     
@@ -64,6 +63,7 @@ class ChangeQuantityInCartView(CartMixin, View):
                                                 )
         quantity = int(request.POST.get('quantity'))
         print(quantity)
+        self.cart.finl_price += product.price * (quantity - cart_product.quantity)
         cart_product.quantity = quantity
         cart_product.final_price = quantity*product.price
         cart_product.save()
